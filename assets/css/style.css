@@ -171,7 +171,7 @@ h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
-* Desktop Navigation 
+* Desktop Navigation
 */
 .navbar {
   padding: 0;
@@ -306,7 +306,7 @@ h6 {
 }
 
 /**
-* Mobile Navigation 
+* Mobile Navigation
 */
 .mobile-nav-toggle {
   color: #222222;
@@ -423,6 +423,7 @@ h6 {
   height: 100vh;
   background: url("../img/hero-bg.jpg") top right;
   background-size: cover;
+  opacity: 0.8;
 }
 
 #hero .container {
@@ -441,11 +442,11 @@ h6 {
   font-size: 48px;
   font-weight: 700;
   line-height: 56px;
-  color: #222222;
+  color: #fbfcf8;
 }
 
 #hero h2 {
-  color: #6f6f6f;
+  color: #fbfcf8;
   margin: 10px 0 0 0;
   font-size: 22px;
 }
