@@ -27,13 +27,6 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: Kelly
-  * Updated: May 30 2023 with Bootstrap v5.3.0
-  * Template URL: https://bootstrapmade.com/kelly-free-bootstrap-cv-resume-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -81,24 +74,30 @@
             <div class="portfolio-info">
               <h3>Mesh Edit</h3>
               <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+                <li><strong>Category</strong>: Graphics</li>
+                <li><strong>Project URL</strong>: <a href="https://github.com/Hanszhang12/meshedit">https://github.com/Hanszhang12/meshedit</a></li>
               </ul>
             </div>
             <div class="portfolio-description">
-              <h2>This is an example of portfolio detail</h2>
+              <h2>Project Details</h2>
               <p>
-                Abstract
-                In this project, we created a Python program that procedurally generate and render world landscapes inspired from the games of our childhood such as Minecraft and Terraria. The program uses a 2-dimensional OpenSimplex noise function to procedurally generate the world surface, employs color theory to select aesthetically pleasing color palette, and use kinematics-based animation techniques to simulate a real world physics environment.
+                In this project, it was interesting how 3d models were made up of Bezier Curves, Bezier Surfaces, edges, vertices, half edges, and triangle faces. It’s cool to see how algorithms such as de Casteljau’s algorithm play a big part in the creation of these meshes. It was also cool to see how vertex normals are used for Phong shading. I was already impressed with how I was able to make a teapot using the Bezier Surfaces but seeing it go from a flat to smooth surface was very cool. I also learned that edge flipping and edge flipping play a huge part in mesh upsampling to make it more smooth.
+              </p>
 
-                Technical Approach
-
-                Noise Function
-                To procedurally generate the world surface a smooth and realistic terrain, we need a suitable noise function that we can feed into the renderer to create surface textures that emulate hills and mountains.
-
-                Using a white noise (random noise) function will not suffice due to the erratic non-pattern look it generates. Instead, we direct our attention to gradient noise functions, specifically the Perlin noise function and its successor, that provides a smooth transition between its adjacent values.
+              <p><strong>Bezier curves with 1D de Casteljau subdivision</strong></p>
+              <p>De Casteljau’s algorithm is used to find the intermediate points in order to get the Bezier Curve. If we consider two points, A and B, this algorithm multiplies the coordinates of A by 1 - t (t being a parameter) and multiplies the coordinates of B by t. This algorithm is performed recursively to get the final interpolated vector. The implementation that I did only required one step of the algorithm. I implemented it by having a for loop that runs n - 1 times with n being the number of points. Inside of the for loop, I would add the result of the algorithm (1-t)points[i] + (t)points[i+1] to the output vector and return it at the end.
+              </p>
+              <p><strong>Bezier surfaces with separable 1D de Casteljau subdivision</strong></p>
+              <p>Bezier surfaces use the Casteljau algorithm first to give four control points on a single Bezier curve and then use the algorithm again to evaluate a point on the “moving” curve of the four control points. My first step in implementing Bezier surfaces was to evaluate a single step of the de Casteljau algorithm for 3d points. Next, I implemented the function that recursively called the first function to get the control point. Lastly, I implemented the function that first performs de Casteljau using the parameter u to get the control points. I then called the first function on these control points using the parameter v.
+              </p>
+              <p><strong>Average normals for half-edge meshes</strong></p>
+              <p>I was able to implement area-weighted vertex normals by having a while loop that iterates through neighboring faces. I started with a vector consisting of 0’s. For each iteration, I would add the normal of the current triangle. The while loop would keep running until it returned to the original edge. At the end, I called unit() on the vector with the sum of the normals to get the output.
+              </p>
+              <p><strong>Half-edge flip</strong></p>
+              <p>For this implementation, I had a lot of trouble at first because I had difficulty visualizing the flip. As a result, I was stuck with a lot of pointers that weren’t accounted for. I used a helpful diagram that had the before and after of the flip with all the half edges, vertexes, and edges labeled to aid me in this. Afterwards, the implementation was pretty easy. It was just a matter of setting the half edges for the vertices, edges, and faces and then setting the neighbors for each of the inner half edges.
+              </p>
+              <p><strong>Half-edge split</strong></p>
+              <p>Edge splitting was a lot more difficult in comparison to edge flipping because there were new edges, half edges, faces, and vertices that needed to be created. I used newVertex, newEdge, newFace, and newHalfedge to create the new elements. After that, I set the neighbors for the half edges and the half edges for all the elements. I calculated the middle vertex by adding up the positions of the vertices on the edges and then dividing by 2.
               </p>
             </div>
           </div>

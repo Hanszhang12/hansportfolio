@@ -77,24 +77,49 @@
             <div class="portfolio-info">
               <h3>World Generation</h3>
               <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+                <li><strong>Category</strong>: Graphics</li>
+                <li><strong>Project URL</strong>: <a href="https://github.com/Hanszhang12/procedural-generation">https://github.com/Hanszhang12/procedural-generation</a></li>
               </ul>
             </div>
             <div class="portfolio-description">
-              <h2>This is an example of portfolio detail</h2>
+              <h2>Project Details</h2>
               <p>
-                Abstract
                 In this project, we created a Python program that procedurally generate and render world landscapes inspired from the games of our childhood such as Minecraft and Terraria. The program uses a 2-dimensional OpenSimplex noise function to procedurally generate the world surface, employs color theory to select aesthetically pleasing color palette, and use kinematics-based animation techniques to simulate a real world physics environment.
+              </p>
 
-                Technical Approach
+              <p><strong>Noise Function</strong></p>
 
-                Noise Function
-                To procedurally generate the world surface a smooth and realistic terrain, we need a suitable noise function that we can feed into the renderer to create surface textures that emulate hills and mountains.
-
+              <p>To procedurally generate the world surface a smooth and realistic terrain, we need a suitable noise function that we can feed into the renderer to create surface textures that emulate hills and mountains.
                 Using a white noise (random noise) function will not suffice due to the erratic non-pattern look it generates. Instead, we direct our attention to gradient noise functions, specifically the Perlin noise function and its successor, that provides a smooth transition between its adjacent values.
+              </p>
+
+              <p>On a high-level, Perlin noise are able to achieve this smooth curve by calculating the dot products between a randomly generated gradient vector and the offset vector (the distance between a point and the gradient vector) and linearly interpolating the dot products. For example, to generate a 2-dimension noise such as the one that we are going to be using, a bi-linear interpolation is used to linearly interpolate 4 dot products. With this method, the algorithmic complexity of our noise function would be O(2^n) where n is the number of dimension.
+              </p>
+              <p>For this project, we instead opt to use another gradient noise function called the [Open]Simplex noise, that is often considered as the successor of the Perlin noise function. The [Open]Simplex noise is able to produce a similar smooth transition between the values, but with better efficiency, O(n^2), in higher dimension and also less directional artifact in the final result.
+                We can then interact with the noise function by providing it a 2D cartesian coordinate, and it will return the corresponding noise value at that point with range: [0, 1]
+                We are then able to generate a formula to generate a set of points for the hill and mountain procedurally.
+              </p>
+              <p><strong>Color Theory</strong></p>
+              <p>Now that we have our world terrain, we need to bring them to life with colors! The simplest approach would be to randomly generate colors, however that would not provide us with the aesthethically pleasing result that we are looking for. Therefore, we need to employ color theory to the many facets of our terrain renders.
+                On a high-level, the color scheme that we want to be working in is the HSLA (Hue, Saturation, Lightness, Alpha) instead of RGBA. HSLA color scheme provides us with a convenient “abstraction” to programmatically use color theory in our program.
+                In the world terrain, you might notice that the hills and mountains have “layers” to it, this was done as an artistic choice to create an emulation of depth in a 2-dimensional space. If you pay attention closely, we also subtly adjust the <y-step> to make it more realistic.
+                  For mountains and hills, we start with a randomly selected hue value for all of the layers, then we slightly adjust the saturation and lightness for each layer to achieve the result that we are looking for. This gives us the “monochromatic” color palette that we are looking for.
+              </p>
+              <p><strong>Night Sky and Mountains</strong></p>
+              <p>If you look closely, you might notice that the night sky also has a randomly selected tint to it. We are able to efficiently generate this programmatically by using the HSLA color scheme. Simply, we select a low lightness and saturation value and randomly selects a hue that corresponds to the color tint.
+                Another subtle detail on the night sky is in the way the mountain range is drawn. You might notice that the mountain seemingly fades into the night sky as if there are layers of fogs. We achieve this by setting the alpha of the mountain range to a lower value and allowing it to blend to the night sky background.
+                This is inspired by Minecraft’s “view distance” setting that fades away the terrain that are a certain distance away from the player (Trivia: this is done to reduce the number of chunks that needs to be loaded at any given time, therefore reducing memory usage, the “fade” prevents player from seeing the unrendered chunks).
+              </p>
+              <p><strong>Kinetic Based Animation</strong></p>
+              <p>The crowning jewel of the terrain render is the star field that graces the night sky. The animation for the star-field is procedurally generated using kinematics and it performs a simple simulation of “gravity” and “air resistance” to create the natural looking shooting star effect.
+                To do this, we employ an animation method that is inspired by kinematics where the object movement is simply dictated by its velocity and acceleration, instead of the individual forces.
+                When instantiated, each particle is assigned a position, horizontal velocity, and vertical velocity.
+                At every discrete timestep, we apply different accelerations on the particle to change its horizontal and vertical velocity. On the y-axis, this would be the “gravity” of the planet. On the x-axis, this would be the “air resistance” of the planet.
+                Last but not least, we then calculate the new position based on the velocity of the particle.
+                By combining these different accelerations, with constant iteration on the range of possible values, we are able to create the arc-ing trajectory of the shooting star. To make this more visible, and also for dramatic effect, we render the trail of each star particle by storing its previous positions.
+
+                Last but not least, we added subtle details on the animation such as the fade in/fade out to create a more realistic feel on how the star appears and disappears.
+
               </p>
             </div>
           </div>
